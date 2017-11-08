@@ -1,0 +1,14 @@
+#mapid {
+  height: calc(100vh - 220px);
+  width: 100%;
+ }
+
+ .is-bordered{
+   border: 1px solid #dbdbdb;
+   border-radius: 3px;
+ }
+
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out{
+  background-color: #209cee !important;
+}

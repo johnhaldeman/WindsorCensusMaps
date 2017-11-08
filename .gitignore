@@ -19,3 +19,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+src/bulma.css
+src/bulma.css.map
+src/leaflet.css
+src/leaflet.js
+src/leaflet.js.map
