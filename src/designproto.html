@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>Windsor Census Overlays</title>
     <link rel="stylesheet" href="custom.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="bulma.css">
@@ -17,7 +17,7 @@
         <nav class="navbar">
           <div class="container">
             <div class="navbar-brand">
-              <a class="navbar-item is-size-3">
+              <a class="navbar-item is-size-3 has-text-info">
                 Windsor Census Overlays
               </a>
               <span class="navbar-burger burger" data-target="navbarMenuHeroB">
@@ -53,11 +53,26 @@
               <div id="mapid"></div>
             </div>
             <div class="column is-bordered">
-              <ul>
-                <li class="has-text-info">Various</li>
-                <li class="has-text-info">View</li>
-                <li class="has-text-info">Options</li>
-              </ul>
+              <h2 class="subtitle has-text-info">Population Statistics</h2>
+              <div class="field">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select>
+                      <option>Total Population</option>
+                      <option>% Male</option>
+                      <option>% Female</option>
+                      <option>Average Age</option>
+                      <option>% 0-14 years</option>
+                      <option>% 15 - 29 years</option>
+                      <option>% 30 - 44 years</option>
+                      <option>% 45 - 59 years</option>
+                      <option>% 60 - 75 years</option>
+                      <option>% Over 75 years</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <p>The average age of the population in a census tract</p>
             </div>
           </div>
         </div>
@@ -67,19 +82,16 @@
         <nav class="tabs is-boxed is-fullwidth">
           <div class="container">
             <ul>
-              <li class="has-text-info is-active">
-                <a>Population</a>
+              <li class="is-active">
+                <a class="has-text-info">Population/Age</a>
               </li>
-              <li>
-                <a class="has-text-info">Age</a>
-              </li>
-              <li>
+              <li class="is-bordered">
                 <a class="has-text-info">Income</a>
               </li>
-              <li>
+              <li class="is-bordered">
                 <a class="has-text-info">Family Structures</a>
               </li>
-              <li>
+              <li class="is-bordered">
                 <a class="has-text-info">Language</a>
               </li>
             </ul>
@@ -88,14 +100,68 @@
       </div>
     </section>
 
-        <script>
-          var mymap = L.map('mapid').setView([42.25, -82.95], 12);
 
-          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-              maxZoom: 18,
-              id: 'mapbox.dark',
-              accessToken: 'pk.eyJ1Ijoiam9obmhhbGRlbWFuIiwiYSI6ImNqOXFkZnYxcjV6OXkyeHFtMjJneTFmem0ifQ._pha7G_TTw937xciMqPfvw'
-          }).addTo(mymap);
-        </script>
+<script src="protodata.js"></script>
+
+<script>
+
+function getColor(d) {
+    if(d > 55) return '#bd0026' ;
+    else if(d > 50)  return '#f03b20';
+    else if(d > 45)  return '#fd8d3c';
+    else if(d > 40)  return '#feb24c';
+    else if(d > 35)  return '#fed976';
+    else if(d > 30)  return '#ffffb2';
+    else console.log("can't find:" + JSON.stringify(prop))
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.average_age),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.5
+    };
+}
+
+var map = L.map('mapid').setView([42.17, -82.80], 11);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+  id: 'mapbox.dark',
+  accessToken: 'pk.eyJ1Ijoiam9obmhhbGRlbWFuIiwiYSI6ImNqOXFkZnYxcjV6OXkyeHFtMjJneTFmem0ifQ._pha7G_TTw937xciMqPfvw'
+  }).addTo(map);
+
+
+L.geoJson(protodata, {style: style}).addTo(map);
+
+
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [30, 35, 40, 45, 50]
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
+
+
+</script>
+
+
+
 </body>
