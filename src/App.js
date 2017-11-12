@@ -4,6 +4,8 @@ import './bulma.css';
 import React, { Component } from 'react';
 import Footer from './FooterComponent';
 import NavigationBar from './NavigationBarComponent';
+import Map from './MapComponent';
+import Menu from './MenuComponent';
 
 function getNavItems(){
   return [
@@ -21,6 +23,20 @@ function getFooterItems(){
   ]
 }
 
+function getMenuItems(){
+  return [
+    {text:'Total Population', key: 1},
+    {text:'% Male', key: 2},
+    {text:'% Female', key: 3},
+    {text:'% 0-14 years', key: 4},
+    {text:'% 15 - 29 years', key: 5},
+    {text:'% 30 - 44 years', key: 6},
+    {text:'% 45 - 59 years', key: 7},
+    {text:'% 60 - 75 years', key: 8},
+    {text:'% Over 75 years', key: 9},
+  ]
+}
+
 class App extends Component {
   render() {
     return (
@@ -30,6 +46,20 @@ class App extends Component {
             nav_items={getNavItems}
           />
         </div>
+
+        <div class="hero-body">
+          <div class="container">
+            <div class="columns">
+              <div class="column is-three-quarters is-bordered">
+                <Map />
+              </div>
+              <div class="column is-bordered">
+                <Menu title="Population Statistics" items={getMenuItems} />
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         <Footer footer_items={getFooterItems} />
       </section>
