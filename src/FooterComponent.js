@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 function getClassNameForFooterButtons(is_active){
   if(is_active)
     return "is-bordered is-active"
   else
-    "is-bordered"
+    return "is-bordered"
 }
 
 function FooterButton(props){

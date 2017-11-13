@@ -47,13 +47,13 @@ class App extends Component {
           />
         </div>
 
-        <div class="hero-body">
-          <div class="container">
-            <div class="columns">
-              <div class="column is-three-quarters is-bordered">
+        <div className="hero-body">
+          <div className="container">
+            <div className="columns">
+              <div className="column is-three-quarters is-bordered">
                 <Map />
               </div>
-              <div class="column is-bordered">
+              <div className="column is-bordered">
                 <Menu title="Population Statistics" items={getMenuItems} />
               </div>
             </div>
