@@ -51,7 +51,7 @@ class App extends Component {
           <div className="container">
             <div className="columns">
               <div className="column is-three-quarters is-bordered">
-                <Map />
+                <Map measure="total_population" />
               </div>
               <div className="column is-bordered">
                 <Menu title="Population Statistics" items={getMenuItems} />

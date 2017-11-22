@@ -28,3 +28,4 @@ src/lib/
 src/annotatedjson/98-400-X2016005_English_CSV_data.csv
 src/annotatedjson/parsed.json
 src/annotatedjson/tracts.json
+src/geo.js
