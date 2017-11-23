@@ -137,9 +137,9 @@ export default class Map extends Component {
     };
 
     let updateFunc = function (featureData) {
-        this._div.innerHTML = (featureData ? '<h4>Average Age in Tract '+ featureData.CTUID
-            + '</h4><b>' + featureData[this.props.measure] + '</b> years'
-            : '<h4>Average Age in Tract</h4> Hover over a census tract');
+        this._div.innerHTML = (featureData ? '<h4>'+ this.props.measure_name + ' in Tract '+ featureData.CTUID
+            + '</h4><b>' + featureData[this.props.measure] + '</b>'+ this.props.measure_units
+            : '<h4>' + this.props.measure_name + ' in Tract</h4> Hover over a census tract');
     };
 
     info.update = updateFunc.bind(this);

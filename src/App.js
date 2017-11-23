@@ -38,6 +38,15 @@ function getMenuItems(){
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      measure: "prop_female",
+      measure_name: "% Female",
+      measure_units: "%"
+    }
+  }
+
   render() {
     return (
       <section className="hero is-dark is-fullheight">
@@ -51,7 +60,9 @@ class App extends Component {
           <div className="container">
             <div className="columns">
               <div className="column is-three-quarters">
-                <Map measure="prop_female" />
+                <Map  measure={this.state.measure}
+                      measure_name={this.state.measure_name}
+                      measure_units={this.state.measure_units} />
               </div>
               <div className="column">
                 <Menu title="Population Statistics" items={getMenuItems} />
