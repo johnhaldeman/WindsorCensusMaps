@@ -50,10 +50,10 @@ class App extends Component {
         <div className="hero-body">
           <div className="container">
             <div className="columns">
-              <div className="column is-three-quarters is-bordered">
-                <Map measure="total_population" />
+              <div className="column is-three-quarters">
+                <Map measure="prop_female" />
               </div>
-              <div className="column is-bordered">
+              <div className="column">
                 <Menu title="Population Statistics" items={getMenuItems} />
               </div>
             </div>

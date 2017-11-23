@@ -4,13 +4,13 @@ function getClassNameForFooterButtons(is_active){
   if(is_active)
     return "is-bordered is-active"
   else
-    return "is-bordered"
+    return ""
 }
 
 function FooterButton(props){
   return(
     <li className={getClassNameForFooterButtons(props.is_active)}>
-      <a className="has-text-info">
+      <a>
         <span className="icon">
           <i className={"fa " + props.icon}></i>
         </span>

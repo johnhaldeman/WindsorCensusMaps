@@ -3,7 +3,7 @@ import React from 'react';
 
 function NavBarItem(props){
   return (
-    <a className="navbar-item has-text-info">
+    <a className="navbar-item">
       <span className="icon">
         <i className={"fa " + props.icon}></i>
       </span>

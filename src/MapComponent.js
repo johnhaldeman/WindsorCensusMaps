@@ -153,7 +153,7 @@ export default class Map extends Component {
       if(this.grades === undefined)
         return "#ffffb2";
 
-      if(d > this.grades[4].max) return '#bd0026' ;
+      if(d >= this.grades[4].max) return '#bd0026' ;
       else if(d >= this.grades[4].min)  return '#f03b20';
       else if(d >= this.grades[3].min)  return '#fd8d3c';
       else if(d >= this.grades[2].min)  return '#feb24c';
@@ -209,7 +209,7 @@ export default class Map extends Component {
 
   render(){
     return(
-      <div id="mapid" ref={el => this.mapref = el}> </div>
+      <div class="is-bordered" id="mapid" ref={el => this.mapref = el}> </div>
     )
   }
 

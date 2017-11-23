@@ -68,8 +68,22 @@ fs.readFile('98-400-X2016005_English_CSV_data.csv', 'utf8', function (err,data) 
       'Dim: Sex (3): Member ID: [1]: Total - Sex',
       'age_group_100+'
     );
+  }
+  for(let i = 0; i < geojson.features.length; i++){
+    let curr = geojson.features[i].properties;
+    curr.prop_male = parseFloat((curr.male_population / curr.total_population) * 100).toFixed(1);
+    curr.prop_female = ((curr.female_population / curr.total_population) * 100).toFixed(1);
+    curr.prop_male = parseFloat(curr.prop_male);
+    curr.prop_female = parseFloat(curr.prop_female);
+
+    for(let j = 0; j < 10; j++){
+      let range = ((j * 10) + 0) + "-" + ((j * 10) + 9);
+      curr['prop_age_group_' + range] = ((curr['age_group_' + range] / curr.total_population) * 100).toFixed(1);
+      curr['prop_age_group_' + range] = parseFloat(curr['prop_age_group_' + range]);
+    }
 
   }
+
 
   console.log(JSON.stringify(geojson));
 });
