@@ -6,6 +6,7 @@ import Footer from './FooterComponent';
 import NavigationBar from './NavigationBarComponent';
 import Map from './MapComponent';
 import Menu from './MenuComponent';
+import getMeasures from './measures.js'
 
 function getNavItems(){
   return [
@@ -23,27 +24,21 @@ function getFooterItems(){
   ]
 }
 
-function getMenuItems(){
-  return [
-    {text:'Total Population', key: 1},
-    {text:'% Male', key: 2},
-    {text:'% Female', key: 3},
-    {text:'% 0-14 years', key: 4},
-    {text:'% 15 - 29 years', key: 5},
-    {text:'% 30 - 44 years', key: 6},
-    {text:'% 45 - 59 years', key: 7},
-    {text:'% 60 - 75 years', key: 8},
-    {text:'% Over 75 years', key: 9},
-  ]
-}
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      measure: "prop_female",
-      measure_name: "% Female",
-      measure_units: "%"
+      curr_measure: getMeasures()[0]
+    }
+  }
+
+  handleMeasureChange(event){
+    let measures = getMeasures();
+    for(let i = 0; i < measures.length; i++){
+      if(event !== undefined && measures[i].measure_name == event.target.value){
+        this.setState({curr_measure: measures[i]});
+      }
     }
   }
 
@@ -60,12 +55,17 @@ class App extends Component {
           <div className="container">
             <div className="columns">
               <div className="column is-three-quarters">
-                <Map  measure={this.state.measure}
-                      measure_name={this.state.measure_name}
-                      measure_units={this.state.measure_units} />
+                <Map  measure={this.state.curr_measure.measure}
+                      measure_name={this.state.curr_measure.measure_name}
+                      measure_units={this.state.curr_measure.measure_units} />
               </div>
               <div className="column">
-                <Menu title="Population Statistics" items={getMenuItems} />
+                <Menu title="Population Statistics"
+                    selectedItem={this.state.curr_measure}
+                    onChange={this.handleMeasureChange.bind(this)}
+                    items={getMeasures}
+                    description={this.state.curr_measure.description}
+                    />
               </div>
             </div>
           </div>

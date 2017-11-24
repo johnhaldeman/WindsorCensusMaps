@@ -7,7 +7,7 @@ import './lib/leaflet.css';
 let config = {};
 
 config.params = {
-  center: [42.17, -82.80],
+  center: [42.19, -82.85],
   zoom: 11,
   maxZoom: 19,
   minZoom: 6,
@@ -22,10 +22,7 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      map: null,
-      tileLayer: null,
-      geojsonLayer: null,
-      info: null
+      map: null
     };
   }
 
@@ -53,12 +50,12 @@ export default class Map extends Component {
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
           layer.bringToFront();
       }
-      this.state.info.update(layer.feature.properties);
+      this.info.update(layer.feature.properties);
   }
 
   resetHighlight(e) {
-      this.state.geojsonLayer.resetStyle(e.target);
-      this.state.info.update();
+      this.geojsonLayer.resetStyle(e.target);
+      this.info.update();
   }
 
   onEachFeature(feature, layer) {
@@ -73,9 +70,7 @@ export default class Map extends Component {
       if (this.state.map) return;
 
       let geojson = getProtoData();
-      this.setState({geojson});
-
-      this.computeColourClasses(geojson, this.props.measure)
+      this.geojson = geojson;
 
       let map = L.map(this.mapref, config.params);
 
@@ -84,9 +79,6 @@ export default class Map extends Component {
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoiam9obmhhbGRlbWFuIiwiYSI6ImNqOXFkZnYxcjV6OXkyeHFtMjJneTFmem0ifQ._pha7G_TTw937xciMqPfvw'
       }).addTo(map);
-
-      this.addLegend(map);
-      this.addRollovers(map);
 
       this.setState({ map, tileLayer });
 
@@ -97,10 +89,12 @@ export default class Map extends Component {
       style: this.style.bind(this),
       onEachFeature: this.onEachFeature.bind(this)
     });
-    geojsonLayer.addTo(this.state.map);
-    this.setState({ geojsonLayer });
 
-    this.zoomToFeature(geojsonLayer);
+    if(this.geojsonLayer !== undefined)
+      this.geojsonLayer.remove();
+
+    geojsonLayer.addTo(this.state.map);
+    this.geojsonLayer = geojsonLayer;
   }
 
   addLegend(map){
@@ -121,8 +115,11 @@ export default class Map extends Component {
 
         return div;
     }.bind(this);
+    if(this.legend !== undefined)
+      this.legend.remove();
 
     legend.addTo(map);
+    this.legend = legend;
   }
 
   addRollovers(map){
@@ -145,8 +142,11 @@ export default class Map extends Component {
     info.update = updateFunc.bind(this);
     info.onAdd = onAddClosure(map, info).bind(this);
 
+    if(this.info !== undefined)
+      this.info.remove();
+
     info.addTo(map);
-    this.setState({info})
+    this.info = info;
   }
 
   getColor(d) {
@@ -186,9 +186,11 @@ export default class Map extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
-    if (this.state.map && !this.state.geojsonLayer) {
-      this.addGeoJSONLayer(this.state.geojson);
+    if (this.state.map) {
+      this.computeColourClasses(this.geojson, this.props.measure)
+      this.addGeoJSONLayer(this.geojson);
+      this.addLegend(this.state.map);
+      this.addRollovers(this.state.map);
     }
   }
 
