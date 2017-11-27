@@ -1,5 +1,6 @@
 var parse = require('csv-parse/lib/sync');
 fs = require('fs')
+var geojsonArea = require('@mapbox/geojson-area');
 
 function addToGeoJSON(geojson, record, filterField, filterValue, returnValue, returnName){
   if(record[filterField] == filterValue){
@@ -69,6 +70,7 @@ fs.readFile('98-400-X2016005_English_CSV_data.csv', 'utf8', function (err,data) 
       'age_group_100+'
     );
   }
+
   for(let i = 0; i < geojson.features.length; i++){
     let curr = geojson.features[i].properties;
     curr.prop_male = parseFloat((curr.male_population / curr.total_population) * 100).toFixed(1);
@@ -76,11 +78,19 @@ fs.readFile('98-400-X2016005_English_CSV_data.csv', 'utf8', function (err,data) 
     curr.prop_male = parseFloat(curr.prop_male);
     curr.prop_female = parseFloat(curr.prop_female);
 
+    curr.area = geojsonArea.geometry(geojson.features[i].geometry) / 1000000;
+    curr.density = (curr.total_population/curr.area).toFixed(1);
+    curr.density = parseFloat((curr.total_population/curr.area).toFixed(1));
+
     for(let j = 0; j < 10; j++){
       let range = ((j * 10) + 0) + "-" + ((j * 10) + 9);
       curr['prop_age_group_' + range] = ((curr['age_group_' + range] / curr.total_population) * 100).toFixed(1);
       curr['prop_age_group_' + range] = parseFloat(curr['prop_age_group_' + range]);
+
+      curr['density_age_group_' + range] = (curr['age_group_' + range] / curr.area).toFixed(1);
+      curr['density_age_group_' + range] = parseFloat(curr['density_age_group_' + range]);
     }
+;
 
   }
 

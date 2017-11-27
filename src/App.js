@@ -15,29 +15,36 @@ function getNavItems(){
   ]
 }
 
-function getFooterItems(){
-  return [
-    {icon: 'fa-female', text:'Population/Age', key: 1, is_active: true},
-    {icon: 'fa-dollar', text:'Income', key: 2, is_active: false},
-    {icon: 'fa-heart', text:'Family Structures', key: 3, is_active: false},
-    {icon: 'fa-commenting', text:'Language', key: 4, is_active: false}
-  ]
-}
-
 
 class App extends Component {
   constructor(props) {
     super(props);
+    let cat = getMeasures()[0];
     this.state = {
-      curr_measure: getMeasures()[0]
+      curr_category: cat,
+      curr_measure: cat.getMeasures()[0]
     }
   }
 
   handleMeasureChange(event){
-    let measures = getMeasures();
+    let measures = this.state.curr_category.getMeasures();
     for(let i = 0; i < measures.length; i++){
-      if(event !== undefined && measures[i].measure_name == event.target.value){
+      if(event !== undefined && measures[i].measure_name === event.target.value){
         this.setState({curr_measure: measures[i]});
+      }
+    }
+  }
+
+  handleCategoryChange(event){
+    let catMeasures = getMeasures();
+    for(let i = 0; i < catMeasures.length; i++){
+      if(event.currentTarget.text === catMeasures[i].category){
+        let curr_category = catMeasures[i];
+        let curr_measure = curr_category.getMeasures()[0];
+        this.setState({
+          curr_category,
+          curr_measure
+        })
       }
     }
   }
@@ -63,7 +70,7 @@ class App extends Component {
                 <Menu title="Population Statistics"
                     selectedItem={this.state.curr_measure}
                     onChange={this.handleMeasureChange.bind(this)}
-                    items={getMeasures}
+                    items={this.state.curr_category.getMeasures}
                     description={this.state.curr_measure.description}
                     />
               </div>
@@ -72,7 +79,7 @@ class App extends Component {
         </div>
 
 
-        <Footer footer_items={getFooterItems} />
+        <Footer footer_items={getMeasures} selected_item={this.state.curr_category} onClick={this.handleCategoryChange.bind(this)} />
       </section>
     );
   }

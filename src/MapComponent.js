@@ -211,7 +211,7 @@ export default class Map extends Component {
 
   render(){
     return(
-      <div class="is-bordered" id="mapid" ref={el => this.mapref = el}> </div>
+      <div className="is-bordered" id="mapid" ref={el => this.mapref = el}> </div>
     )
   }
 

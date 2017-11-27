@@ -10,7 +10,7 @@ function getClassNameForFooterButtons(is_active){
 function FooterButton(props){
   return(
     <li className={getClassNameForFooterButtons(props.is_active)}>
-      <a>
+      <a href="#" onClick={props.onClick}>
         <span className="icon">
           <i className={"fa " + props.icon}></i>
         </span>
@@ -26,8 +26,9 @@ export default function Footer(props){
       <nav className="tabs is-boxed is-fullwidth">
         <div className="container">
           <ul>
-            {props.footer_items().map(item => <FooterButton key={item.key}
-              icon={item.icon} text={item.text} is_active={item.is_active}/>)
+            {props.footer_items().map((item, i) =>
+              <FooterButton onClick={props.onClick} key={i}
+              icon={item.icon} text={item.category} is_active={item.category === props.selected_item.category} />)
             }
           </ul>
         </div>
