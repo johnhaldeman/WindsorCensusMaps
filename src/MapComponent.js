@@ -173,8 +173,15 @@ export default class Map extends Component {
         max = currentFeature.properties[fieldName];
     }
 
-    min = min - (min % 5);
-    max = max - (max % 5);
+    if(max - min < 5){
+      min = Math.floor(min);
+      max = Math.ceil(max);
+    }
+    else{
+      min = min - (min % 5);
+      max = max - (max % 5);
+    }
+
     let gradeStep = (max - min) / 5;
 
     let grades = [];

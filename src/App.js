@@ -67,7 +67,7 @@ class App extends Component {
                       measure_units={this.state.curr_measure.measure_units} />
               </div>
               <div className="column">
-                <Menu title="Population Statistics"
+                <Menu title={this.state.curr_category.title}
                     selectedItem={this.state.curr_measure}
                     onChange={this.handleMeasureChange.bind(this)}
                     items={this.state.curr_category.getMeasures}

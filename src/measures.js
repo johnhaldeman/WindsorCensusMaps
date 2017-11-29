@@ -3,6 +3,7 @@ export default function getMeasures(){
       {
       category: "Population/Age",
       icon: 'fa-female',
+      title: 'Age and Population Statistics',
       getMeasures: () =>
       [
         {
@@ -154,13 +155,144 @@ export default function getMeasures(){
     {
       category: "Income",
       icon: 'fa-dollar',
+      title: 'Income and Tax Statistics',
       getMeasures: () =>
       [
         {
-          measure: "density_age_group_90-99",
-          measure_name: "Density for ages 90-99",
-          measure_units: " people/km<sup>2</sup>",
-          description: "Population Denisty of people aged 90 to 99 years in terms of people per kilometers squared."
+          measure: "average_total_income",
+          measure_name: "Total Income - Average",
+          measure_units: "$",
+          description: "Average Total Income including employment, self-employment, investment, and government transfer income"
+        },
+        {
+          measure: "median_total_income",
+          measure_name: "Total Income - Median",
+          measure_units: "$",
+          description: "Median Total Income including employment, self-employment, investment, and government transfer income"
+        },
+        {
+          measure: "average_employment_income",
+          measure_name: "Employment Income - Average",
+          measure_units: "$",
+          description: "Average Employment Income including self-employment"
+        },
+        {
+          measure: "median_employment_income",
+          measure_name: "Employment Income - Median",
+          measure_units: "$",
+          description: "Median Employment Income including self-employment"
+        },
+        {
+          measure: "average_investment_income",
+          measure_name: "Investment Income - Average",
+          measure_units: "$",
+          description: "Average Investment Income (excludes private retirement income)"
+        },
+        {
+          measure: "median_investment_income",
+          measure_name: "Investment Income - Median",
+          measure_units: "$",
+          description: "Median Investment Income (excludes private retirement income)"
+        },
+        {
+          measure: "average_priv_retirement_income",
+          measure_name: "Private Retirement Income - Average",
+          measure_units: "$",
+          description: "Average Private Retirement Income"
+        },
+        {
+          measure: "median_priv_retirement_income",
+          measure_name: "Private Retirement Income - Median",
+          measure_units: "$",
+          description: "Median Private Retirement Income"
+        },
+        {
+          measure: "average_gov_transfers",
+          measure_name: "Government Transfers - Average",
+          measure_units: "$",
+          description: "Average Governement Transfers including CPP, OAS, GIS, EI, Child Benefits, and Social Assistance"
+        },
+        {
+          measure: "median_gov_transfers",
+          measure_name: "Government Transfers - Median",
+          measure_units: "$",
+          description: "Median Governement Transfers including CPP, OAS, GIS, EI, Child Benefits, and Social Assistance"
+        },
+        {
+          measure: "average_after_tax_income",
+          measure_name: "After Tax Income - Average",
+          measure_units: "$",
+          description: "Average After Tax Income"
+        },
+        {
+          measure: "median_after_tax_income",
+          measure_name: "After Tax Income - Median",
+          measure_units: "$",
+          description: "Median After Tax Income"
+        },
+        {
+          measure: "average_income_taxes",
+          measure_name: "Income Taxes Paid - Average",
+          measure_units: "$",
+          description: "Average Income Taxes Paid"
+        },
+        {
+          measure: "median_income_taxes",
+          measure_name: "Income Taxes Paid - Median",
+          measure_units: "$",
+          description: "Median Income Taxes Paid"
+        },
+        {
+          measure: "median_household_total_income",
+          measure_name: "Household Income - Median",
+          measure_units: "$",
+          description: "Median Household Income"
+        },
+        {
+          measure: "median_household_couple_nochildren_income",
+          measure_name: "Household Income - Couples w/o children - Median",
+          measure_units: "$",
+          description: "Median Household Income - Couples without Children"
+        },
+        {
+          measure: "median_household_couple_children_income",
+          measure_name: "Household Income - Couples with children - Median",
+          measure_units: "$",
+          description: "Median Household Income - Couples with Children"
+        },
+        {
+          measure: "median_household_loneparent_income",
+          measure_name: "Household Income - Single Parent - Median",
+          measure_units: "$",
+          description: "Median Household Income - Single Parent"
+        }
+      ]
+    },
+    {
+      category: "Family Structure",
+      icon: 'fa-home',
+      title: 'Income and Tax Statistics',
+      getMeasures: () =>
+      [
+        {
+          measure: "average_total_income",
+          measure_name: "Total Income - Average",
+          measure_units: "$",
+          description: "Average Total Income including employment, self-employment, investment, and government transfer income"
+        }
+      ]
+    },
+    {
+      category: "Language",
+      icon: 'fa-comments',
+      title: 'Income and Tax Statistics',
+      getMeasures: () =>
+      [
+        {
+          measure: "average_total_income",
+          measure_name: "Total Income - Average",
+          measure_units: "$",
+          description: "Average Total Income including employment, self-employment, investment, and government transfer income"
         }
       ]
     }
