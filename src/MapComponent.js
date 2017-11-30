@@ -105,7 +105,7 @@ export default class Map extends Component {
 
         for (var i = 0; i < this.grades.length; i++) {
             div.innerHTML +=
-                '<i style="background:' + this.getColor(this.grades[i].min + 1) + '">&nbsp;</i> ' +
+                '<i style="background:' + this.getColor(this.grades[i].min + 0.0001) + '">&nbsp;</i> ' +
                 this.grades[i].min + '&ndash;' + this.grades[i].max + '<br/><br/>';
         }
 
@@ -150,15 +150,17 @@ export default class Map extends Component {
   }
 
   getColor(d) {
-      if(this.grades === undefined)
-        return "#ffffb2";
+      if(this.grades === undefined || d === null)
+        return "#aaaaaa";
 
-      if(d >= this.grades[4].max) return '#bd0026' ;
-      else if(d >= this.grades[4].min)  return '#f03b20';
-      else if(d >= this.grades[3].min)  return '#fd8d3c';
-      else if(d >= this.grades[2].min)  return '#feb24c';
-      else if(d >= this.grades[1].min)  return '#fed976';
-      else if(d >= this.grades[0].min)  return '#ffffb2';
+      let compNum = this.getFixedFloat(d, 2);
+
+      if(compNum >= this.grades[4].max) return '#bd0026' ;
+      else if(compNum >= this.grades[4].min)  return '#f03b20';
+      else if(compNum >= this.grades[3].min)  return '#fd8d3c';
+      else if(compNum >= this.grades[2].min)  return '#feb24c';
+      else if(compNum >= this.grades[1].min)  return '#fed976';
+      else if(compNum >= this.grades[0].min)  return '#ffffb2';
   }
 
   computeColourClasses(geojson, fieldName){
@@ -182,14 +184,18 @@ export default class Map extends Component {
       max = max - (max % 5);
     }
 
-    let gradeStep = (max - min) / 5;
+    let gradeStep = this.getFixedFloat((max - min) / 5, 2);
 
     let grades = [];
-    for(let i = min; i < max; i = i + gradeStep){
-      grades.push({min: i, max: i + gradeStep});
+    for(let i = min; this.getFixedFloat(i, 2) < this.getFixedFloat(max, 2); i = i + gradeStep){
+      grades.push({min: this.getFixedFloat(i, 2), max: this.getFixedFloat(i + gradeStep, 2)});
     }
 
     this.grades = grades;
+  }
+
+  getFixedFloat(num, dec){
+    return parseFloat(num.toFixed(dec));
   }
 
   componentDidUpdate(prevProps, prevState) {

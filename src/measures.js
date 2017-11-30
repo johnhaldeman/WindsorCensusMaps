@@ -271,15 +271,51 @@ export default function getMeasures(){
     {
       category: "Family Structure",
       icon: 'fa-home',
-      title: 'Income and Tax Statistics',
+      title: 'Family Structure',
       getMeasures: () =>
       [
         {
-          measure: "average_total_income",
-          measure_name: "Total Income - Average",
-          measure_units: "$",
-          description: "Average Total Income including employment, self-employment, investment, and government transfer income"
-        }
+          measure: "average_number_children",
+          measure_name: "Average Number of Children",
+          measure_units: "",
+          description: "Average Number of Children per Family"
+        },
+        {
+          measure: "prop_families_w_one_child",
+          measure_name: "% Families with one Child",
+          measure_units: "",
+          description: "The proportion of families with children that have a single child"
+        },
+        {
+          measure: "prop_families_w_two_children",
+          measure_name: "% Families with two Children",
+          measure_units: "",
+          description: "The proportion of families with children that have two children only"
+        },
+        {
+          measure: "prop_families_w_threeplus_children",
+          measure_name: "% Families with 3+ Children",
+          measure_units: "",
+          description: "The proportion of families with three or more children"
+        },
+        {
+          measure: "prop_intact_families_w_children",
+          measure_name: "% Families with Children that are Intact",
+          measure_units: "",
+          description: "The proportion of families with children that are in-tact (not a step family or a single parent)"
+        },
+        {
+          measure: "prop_stepfamilies_w_children",
+          measure_name: "% Stepfamilies with Children",
+          measure_units: "",
+          description: "The proportion of families with children that are Stepfamilies"
+        },
+        {
+          measure: "prop_single_parent_families_w_children",
+          measure_name: "% Single Parent Families",
+          measure_units: "",
+          description: "The proportion of families with children that have a single parent"
+        },
       ]
     },
     {
