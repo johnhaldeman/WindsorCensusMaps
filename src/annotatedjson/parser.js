@@ -11,6 +11,7 @@ function addToGeoJSON(geojson, record, filterField, filterValue, returnValue, re
   }
 }
 
+
 function addAgeGroupToGeoJSON(geojson, record, filterField, filterValueMin, filterValueMax, lookupField, returnName){
   if(!isNaN(record[filterField]) && record[filterField] >= filterValueMin && record[filterField] <= filterValueMax) {
     for(let i = 0; i < geojson.features.length; i++){
@@ -197,6 +198,31 @@ function populateHouseholdIncome(geojson){
   }
 }
 
+function populateMotherTongue1(geojson){
+  let data = fs.readFileSync('98-400-X2016049_English_CSV_data.csv').toString();
+  var records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addToGeoJSON(geojson, records[i],
+      'DIM: Mother tongue (10)',
+      'Total - Mother tongue',
+      'Dim: Age (27): Member ID: [1]: Total - Age',
+      'mother_tongue_total'
+    );
+    addToGeoJSON(geojson, records[i],
+      'DIM: Mother tongue (10)',
+      'English',
+      'Dim: Age (27): Member ID: [1]: Total - Age',
+      'mother_tongue_english'
+    );
+    addToGeoJSON(geojson, records[i],
+      'DIM: Mother tongue (10)',
+      'French',
+      'Dim: Age (27): Member ID: [1]: Total - Age',
+      'mother_tongue_french'
+    );
+  }
+}
+
 function populateFamilyStructure(geojson){
   let data = fs.readFileSync('98-400-X2016026_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
@@ -281,6 +307,9 @@ function addComputedFields(geojson){
     curr.prop_stepfamilies_w_children = parseFloat(((curr.total_stepfamilies_w_children / curr.total_families_w_children) * 100).toFixed(1))
     curr.prop_single_parent_families_w_children = parseFloat(((curr.single_parent_families_w_children / curr.total_families_w_children) * 100).toFixed(1))
 
+    curr.prop_mother_tongue_english = parseFloat(((curr.mother_tongue_english / curr.mother_tongue_total) * 100).toFixed(1))
+    curr.prop_mother_tongue_french = parseFloat(((curr.mother_tongue_french / curr.mother_tongue_total) * 100).toFixed(1))
+
   }
 }
 
@@ -292,8 +321,44 @@ populateIncomeData1(geojson);
 populateIncomeData2(geojson);
 populateHouseholdIncome(geojson);
 populateFamilyStructure(geojson);
+populateMotherTongue1(geojson);
 
 addComputedFields(geojson);
 
+
+let data = fs.readFileSync('98-400-X2016057_English_CSV_data_totals_559.csv').toString();
+var records = parse(data, {columns: true});
+let geos = {};
+for(let i = 0; i < records.length; i++){
+  let record = records[i];
+  if(   record['DIM: Sex (3)'] == "Total - Sex" &&
+        record['DIM: Age (15A)'] == "Total - Age" &&
+        record['DIM: Mother tongue (269)'] !== "Total - Mother tongue" &&
+        record['DIM: Mother tongue (269)'] !== "English" &&
+        record['DIM: Mother tongue (269)'] !== "French" &&
+        record['DIM: Mother tongue (269)'] !== "English and French" &&
+        !record['DIM: Mother tongue (269)'].includes("langua") &&
+        !record['DIM: Mother tongue (269)'].includes("response")
+      ){
+    let tract = record['GEO_CODE (POR)'];
+    if(geos[tract] === undefined){
+      geos[tract] = {
+        name: record['DIM: Mother tongue (269)'],
+        value: parseInt(record['Dim: Knowledge of official languages (5): Member ID: [1]: Total - Knowledge of official languages'])
+      }
+    }
+    else if(geos[tract].value < parseInt(record['Dim: Knowledge of official languages (5): Member ID: [1]: Total - Knowledge of official languages'] )) {
+      geos[tract] = {
+        name: record['DIM: Mother tongue (269)'],
+        value: parseInt(record['Dim: Knowledge of official languages (5): Member ID: [1]: Total - Knowledge of official languages'])
+      }
+    }
+  }
+}
+
+for(let i = 0; i < geojson.features.length; i++){
+  geojson.features[i].properties["most_mother_tongue"] = geos[geojson.features[i].properties.CTUID].name;
+  geojson.features[i].properties["most_mother_tongue_prop"] = parseFloat(((geos[geojson.features[i].properties.CTUID].value / geojson.features[i].properties["mother_tongue_total"]) * 100).toFixed(1))
+}
 
 console.log(JSON.stringify(geojson));

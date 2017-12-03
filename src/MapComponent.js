@@ -72,6 +72,10 @@ export default class Map extends Component {
       let geojson = getProtoData();
       this.geojson = geojson;
 
+      if(this.mapref.clientWidth < 700){
+        config.params.zoom = 10;
+      }
+
       let map = L.map(this.mapref, config.params);
 
       const tileLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -103,15 +107,23 @@ export default class Map extends Component {
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
 
-        for (var i = 0; i < this.grades.length; i++) {
-            div.innerHTML +=
-                '<i style="background:' + this.getColor(this.grades[i].min + 0.0001) + '">&nbsp;</i> ' +
-                this.grades[i].min + '&ndash;' + this.grades[i].max + '<br/><br/>';
+        if(this.props.measure_type === 'qualitative'){
+          for (var key in this.props.colours) {
+              div.innerHTML += '<i style="background:' + this.props.colours[key] + '">&nbsp;</i> ' +
+                  key + '<br/><br/>';
+          }
         }
+        else{
+          for (var i = 0; i < this.grades.length; i++) {
+              div.innerHTML +=
+                  '<i style="background:' + this.getColor(this.grades[i].min + 0.0001) + '">&nbsp;</i> ' +
+                  this.grades[i].min + '&ndash;' + this.grades[i].max + '<br/><br/>';
+          }
 
-        let max =  this.grades[this.grades.length - 1].max;
-        div.innerHTML += '<i style="background:' + this.getColor(max + 1) + '">&nbsp;</i> ' +
-          max + '+';
+          let max =  this.grades[this.grades.length - 1].max;
+          div.innerHTML += '<i style="background:' + this.getColor(max + 1) + '">&nbsp;</i> ' +
+            max + '+';
+        }
 
         return div;
     }.bind(this);
@@ -134,9 +146,17 @@ export default class Map extends Component {
     };
 
     let updateFunc = function (featureData) {
-        this._div.innerHTML = (featureData ? '<h4>'+ this.props.measure_name + ' in Tract '+ featureData.CTUID
-            + '</h4><b>' + featureData[this.props.measure] + '</b>'+ this.props.measure_units
-            : '<h4>' + this.props.measure_name + ' in Tract</h4> Hover over a census tract');
+      let numData = 0;
+      if(this.props.measure_type === 'qualitative' && featureData !== undefined){
+        numData = featureData[this.props.measure] + ": " + featureData[this.props.measure_detail];
+      }
+      else if(featureData !== undefined){
+        numData = featureData[this.props.measure];
+      }
+
+      this._div.innerHTML = (featureData ? '<h4>'+ this.props.measure_name + ' in Tract '+ featureData.CTUID
+          + '</h4><b>' + numData + '</b>'+ this.props.measure_units
+          : '<h4>' + this.props.measure_name + ' in Tract</h4> Hover over or tap a census tract');
     };
 
     info.update = updateFunc.bind(this);
@@ -150,17 +170,22 @@ export default class Map extends Component {
   }
 
   getColor(d) {
-      if(this.grades === undefined || d === null)
-        return "#aaaaaa";
+      if(this.props.measure_type === 'qualitative'){
+        return this.props.colours[d];
+      }
+      else{
+        if(this.grades === undefined || d === null)
+          return "#aaaaaa";
 
-      let compNum = this.getFixedFloat(d, 2);
+        let compNum = this.getFixedFloat(d, 2);
 
-      if(compNum >= this.grades[4].max) return '#bd0026' ;
-      else if(compNum >= this.grades[4].min)  return '#f03b20';
-      else if(compNum >= this.grades[3].min)  return '#fd8d3c';
-      else if(compNum >= this.grades[2].min)  return '#feb24c';
-      else if(compNum >= this.grades[1].min)  return '#fed976';
-      else if(compNum >= this.grades[0].min)  return '#ffffb2';
+        if(compNum >= this.grades[4].max) return '#bd0026' ;
+        else if(compNum >= this.grades[4].min)  return '#f03b20';
+        else if(compNum >= this.grades[3].min)  return '#fd8d3c';
+        else if(compNum >= this.grades[2].min)  return '#feb24c';
+        else if(compNum >= this.grades[1].min)  return '#fed976';
+        else if(compNum >= this.grades[0].min)  return '#ffffb2';
+      }
   }
 
   computeColourClasses(geojson, fieldName){
@@ -200,7 +225,8 @@ export default class Map extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.map) {
-      this.computeColourClasses(this.geojson, this.props.measure)
+      if(this.props.measure_type !== 'qualitative')
+        this.computeColourClasses(this.geojson, this.props.measure)
       this.addGeoJSONLayer(this.geojson);
       this.addLegend(this.state.map);
       this.addRollovers(this.state.map);

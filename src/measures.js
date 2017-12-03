@@ -321,14 +321,37 @@ export default function getMeasures(){
     {
       category: "Language",
       icon: 'fa-comments',
-      title: 'Income and Tax Statistics',
+      title: 'Mother Tongue',
       getMeasures: () =>
       [
         {
-          measure: "average_total_income",
-          measure_name: "Total Income - Average",
-          measure_units: "$",
-          description: "Average Total Income including employment, self-employment, investment, and government transfer income"
+          measure: "prop_mother_tongue_english",
+          measure_name: "% Mother Tongue English",
+          measure_units: "%",
+          description: "Proportion of people who's mother tongue is English. 'Mother tongue' refers to the first language learned at home in childhood and still understood by the person at the time the data was collected. If the person no longer understands the first language learned, the mother tongue is the second language learned. For a person who learned two languages at the same time in early childhood, the mother tongue is the language this person spoke most often at home before starting school. For a child who has not yet learned to speak, the mother tongue is the language spoken most often to this child at home."
+        },
+        {
+          measure: "prop_mother_tongue_french",
+          measure_name: "% Mother Tongue French",
+          measure_units: "%",
+          description: "Proportion of people who's mother tongue is French. 'Mother tongue' refers to the first language learned at home in childhood and still understood by the person at the time the data was collected. If the person no longer understands the first language learned, the mother tongue is the second language learned. For a person who learned two languages at the same time in early childhood, the mother tongue is the language this person spoke most often at home before starting school. For a child who has not yet learned to speak, the mother tongue is the language spoken most often to this child at home."
+        },
+        {
+          measure: "most_mother_tongue",
+          measure_type: "qualitative",
+          measure_name: "Most Common Mother Tongue Except French and English",
+          measure_detail: "most_mother_tongue_prop",
+          measure_units: "%",
+          colours: {
+            'Arabic':     '#66c2a5',
+            'Italian':    '#fc8d62',
+            'Mandarin':   '#8da0cb',
+            'Spanish':    '#e78ac3',
+            'Vietnamese': '#a6d854',
+            'Serbian':    '#ffd92f',
+            'German':     '#e5c494',
+          },
+          description: "The most common mother tongue for a tract that is neither English nor French. Note that the people represented here may know English or French, but those languages are not their mother tongue."
         }
       ]
     }

@@ -1,0 +1,48 @@
+#mapid {
+  height: calc(100vh - 220px);
+  width: 100%;
+ }
+
+ .is-bordered{
+   border: 1px solid #dbdbdb;
+   border-radius: 3px;
+ }
+
+ .no-pad{
+   padding: 0;
+ }
+
+ legend {
+     line-height: 18px;
+     color: #555;
+ }
+
+ .legend i {
+     width: 18px;
+     height: 18px;
+     float: left;
+     margin-right: 8px;
+     opacity: 0.5;
+ }
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out{
+  background-color: #209cee !important;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    color: #111;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #111;
+}
+
+.link {
+  text-decoration: underline;
+}

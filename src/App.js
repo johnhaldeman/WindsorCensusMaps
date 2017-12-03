@@ -11,7 +11,7 @@ import getMeasures from './measures.js'
 function getNavItems(){
   return [
     {icon: 'fa-github', text:'Source Code', key: 1},
-    {icon: 'fa-info-circle', text:'About', key: 2}
+    {icon: 'fa-info-circle', text:'About', key: 2, href: 'about.html'}
   ]
 }
 
@@ -27,6 +27,7 @@ class App extends Component {
   }
 
   handleMeasureChange(event){
+    event.preventDefault();
     let measures = this.state.curr_category.getMeasures();
     for(let i = 0; i < measures.length; i++){
       if(event !== undefined && measures[i].measure_name === event.target.value){
@@ -36,6 +37,7 @@ class App extends Component {
   }
 
   handleCategoryChange(event){
+    event.preventDefault();
     let catMeasures = getMeasures();
     for(let i = 0; i < catMeasures.length; i++){
       if(event.currentTarget.text === catMeasures[i].category){
@@ -53,7 +55,7 @@ class App extends Component {
     return (
       <section className="hero is-dark is-fullheight">
         <div className="hero-head">
-          <NavigationBar title="Windsor Census Overlays"
+          <NavigationBar title="Windsor Census Maps"
             nav_items={getNavItems}
           />
         </div>
@@ -64,7 +66,11 @@ class App extends Component {
               <div className="column is-three-quarters">
                 <Map  measure={this.state.curr_measure.measure}
                       measure_name={this.state.curr_measure.measure_name}
-                      measure_units={this.state.curr_measure.measure_units} />
+                      measure_units={this.state.curr_measure.measure_units}
+                      measure_type={this.state.curr_measure.measure_type}
+                      measure_detail={this.state.curr_measure.measure_detail}
+                      colours={this.state.curr_measure.colours}
+                      />
               </div>
               <div className="column">
                 <Menu title={this.state.curr_category.title}
