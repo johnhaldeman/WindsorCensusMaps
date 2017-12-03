@@ -10,7 +10,7 @@ import getMeasures from './measures.js'
 
 function getNavItems(){
   return [
-    {icon: 'fa-github', text:'Source Code', key: 1},
+    {icon: 'fa-github', text:'Source Code', key: 1, href: 'https://github.com/johnhaldeman/WindsorCensusMaps'},
     {icon: 'fa-info-circle', text:'About', key: 2, href: 'about.html'}
   ]
 }

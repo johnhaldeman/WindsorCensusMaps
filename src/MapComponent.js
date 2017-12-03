@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import getProtoData from './geo';
+import getToken from './token';
 import L from 'leaflet';
 import './lib/leaflet.css';
 
@@ -81,7 +82,7 @@ export default class Map extends Component {
       const tileLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         id: 'mapbox.streets',
-        accessToken: 'pk.eyJ1Ijoiam9obmhhbGRlbWFuIiwiYSI6ImNqOXFkZnYxcjV6OXkyeHFtMjJneTFmem0ifQ._pha7G_TTw937xciMqPfvw'
+        accessToken: getToken()
       }).addTo(map);
 
       this.setState({ map, tileLayer });
@@ -234,8 +235,10 @@ export default class Map extends Component {
   }
 
   zoomToFeature(e) {
-    if(e.target)
+    if(e.target){
       this.state.map.fitBounds(e.target.getBounds());
+      this.highlightFeature.bind(this)(e);
+    }
     else
       this.state.map.fitBounds(e.getBounds());
   }
