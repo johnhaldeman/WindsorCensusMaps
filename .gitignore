@@ -35,3 +35,4 @@ src/annotatedjson/sample.csv
 src/annotatedjson/WindsorLang.csv
 public/bulma.css
 src/token.js
+src/annotatedjson/tracts0.json
