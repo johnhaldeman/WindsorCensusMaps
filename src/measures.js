@@ -343,13 +343,14 @@ export default function getMeasures(){
           measure_detail: "most_mother_tongue_prop",
           measure_units: "%",
           colours: {
-            'Arabic':     '#66c2a5',
-            'Italian':    '#fc8d62',
-            'Mandarin':   '#8da0cb',
-            'Spanish':    '#e78ac3',
-            'Vietnamese': '#a6d854',
-            'Serbian':    '#ffd92f',
-            'German':     '#e5c494',
+            'Arabic':     '#8dd3c7',
+            'Italian':    '#ffffb3',
+            'Mandarin':   '#bebada',
+            'Spanish':    '#fb8072',
+            'Vietnamese': '#80b1d3',
+            'Serbian':    '#fdb462',
+            'German':     '#b3de69',
+            'Portuguese': '#fccde5'
           },
           description: "The most common mother tongue for a tract that is neither English nor French. Note that the people represented here may know English or French, but those languages are not their mother tongue."
         }

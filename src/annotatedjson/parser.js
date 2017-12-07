@@ -24,257 +24,315 @@ function addAgeGroupToGeoJSON(geojson, record, filterField, filterValueMin, filt
   }
 }
 
-function populatePopulationData(geojson){
-  let data = fs.readFileSync('98-400-X2016005_English_CSV_data.csv').toString();
-  var records = parse(data, {columns: true});
-  for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
+function addPopElements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Age (in single years) and average age (127)',
+    'Average age',
+    'Dim: Sex (3): Member ID: [1]: Total - Sex',
+    'average_age'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Age (in single years) and average age (127)',
+    'Total - Age',
+    'Dim: Sex (3): Member ID: [1]: Total - Sex',
+    'total_population'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Age (in single years) and average age (127)',
+    'Total - Age',
+    'Dim: Sex (3): Member ID: [2]: Male',
+    'male_population'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Age (in single years) and average age (127)',
+    'Total - Age',
+    'Dim: Sex (3): Member ID: [3]: Female',
+    'female_population'
+  );
+  for(let j = 0; j < 10; j++){
+    addAgeGroupToGeoJSON(geojson, records[i],
       'DIM: Age (in single years) and average age (127)',
-      'Average age',
+      (j * 10) + 0, (j * 10) + 9,
       'Dim: Sex (3): Member ID: [1]: Total - Sex',
-      'average_age'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Age (in single years) and average age (127)',
-      'Total - Age',
-      'Dim: Sex (3): Member ID: [1]: Total - Sex',
-      'total_population'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Age (in single years) and average age (127)',
-      'Total - Age',
-      'Dim: Sex (3): Member ID: [2]: Male',
-      'male_population'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Age (in single years) and average age (127)',
-      'Total - Age',
-      'Dim: Sex (3): Member ID: [3]: Female',
-      'female_population'
-    );
-    for(let j = 0; j < 10; j++){
-      addAgeGroupToGeoJSON(geojson, records[i],
-        'DIM: Age (in single years) and average age (127)',
-        (j * 10) + 0, (j * 10) + 9,
-        'Dim: Sex (3): Member ID: [1]: Total - Sex',
-        'age_group_'
-      );
-    }
-    addToGeoJSON(geojson, records[i],
-      'DIM: Age (in single years) and average age (127)',
-      '100 years and over',
-      'Dim: Sex (3): Member ID: [1]: Total - Sex',
-      'age_group_100+'
+      'age_group_'
     );
   }
+  addToGeoJSON(geojson, records[i],
+    'DIM: Age (in single years) and average age (127)',
+    '100 years and over',
+    'Dim: Sex (3): Member ID: [1]: Total - Sex',
+    'age_group_100+'
+  );
+}
+
+function populatePopulationData(geojson){
+  let data = fs.readFileSync('98-400-X2016005_English_CSV_data.csv').toString();
+  let records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addPopElements(geojson, records, i)
+  }
+
+  data = fs.readFileSync('98-400-X2016003_English_CSV_data_353.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addPopElements(geojson, records, i)
+  }
+}
+
+function addIncome1Elements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Total income',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_total_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Employment income',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_employment_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Investment income',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_investment_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Private retirement income',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_priv_retirement_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Government transfers',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_gov_transfers'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'After-tax income',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_after_tax_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Income taxes',
+    'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
+    'average_income_taxes'
+  );
 }
 
 function populateIncomeData1(geojson){
   let data = fs.readFileSync('98-400-X2016122_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
   for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Total income',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_total_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Employment income',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_employment_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Investment income',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_investment_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Private retirement income',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_priv_retirement_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Government transfers',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_gov_transfers'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'After-tax income',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_after_tax_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Income taxes',
-      'Dim: Income statistics (5A): Member ID: [4]: Average amount ($) (Note: 35)',
-      'average_income_taxes'
-    );
+    addIncome1Elements(geojson, records, i);
   }
+  data = fs.readFileSync('98-400-X2016120_English_CSV_data.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addIncome1Elements(geojson, records, i);
+  }
+
+}
+
+function addIncome2Elements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Total income',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_total_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Employment income',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_employment_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Investment income',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_investment_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Private retirement income',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_priv_retirement_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Government transfers',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_gov_transfers'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'After-tax income',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_after_tax_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Income sources and taxes (34)',
+    'Income taxes',
+    'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
+    'median_income_taxes'
+  );
 }
 
 function populateIncomeData2(geojson){
   let data = fs.readFileSync('98-400-X2016121_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
   for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Total income',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_total_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Employment income',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_employment_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Investment income',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_investment_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Private retirement income',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_priv_retirement_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Government transfers',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_gov_transfers'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'After-tax income',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_after_tax_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Income sources and taxes (34)',
-      'Income taxes',
-      'Dim: Income statistics (4): Member ID: [4]: Median amount ($) (Note: 35)',
-      'median_income_taxes'
-    );
+    addIncome2Elements(geojson, records, i);
   }
+
+  data = fs.readFileSync('98-400-X2016119_English_CSV_data.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addIncome2Elements(geojson, records, i);
+  }
+}
+
+function addHouseholdIncomeElements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Household type including census family structure (11)',
+    'Total - Household type including census family structure',
+    'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
+    'median_household_total_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Household type including census family structure (11)',
+    'One lone-parent census family without other persons in the household',
+    'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
+    'median_household_loneparent_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Household type including census family structure (11)',
+    'Without children',
+    'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
+    'median_household_couple_nochildren_income'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Household type including census family structure (11)',
+    'With children',
+    'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
+    'median_household_couple_children_income'
+  );
 }
 
 function populateHouseholdIncome(geojson){
   let data = fs.readFileSync('98-400-X2016100_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
   for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
-      'DIM: Household type including census family structure (11)',
-      'Total - Household type including census family structure',
-      'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
-      'median_household_total_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Household type including census family structure (11)',
-      'One lone-parent census family without other persons in the household',
-      'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
-      'median_household_loneparent_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Household type including census family structure (11)',
-      'Without children',
-      'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
-      'median_household_couple_nochildren_income'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Household type including census family structure (11)',
-      'With children',
-      'Dim: Household income statistics (3): Member ID: [3]: Median after-tax income of households ($)',
-      'median_household_couple_children_income'
-    );
+    addHouseholdIncomeElements(geojson, records, i);
   }
+  data = fs.readFileSync('98-400-X2016099_English_CSV_data.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addHouseholdIncomeElements(geojson, records, i);
+  }
+}
+
+function addMotherTongueElements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Mother tongue (10)',
+    'Total - Mother tongue',
+    'Dim: Age (27): Member ID: [1]: Total - Age',
+    'mother_tongue_total'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Mother tongue (10)',
+    'English',
+    'Dim: Age (27): Member ID: [1]: Total - Age',
+    'mother_tongue_english'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Mother tongue (10)',
+    'French',
+    'Dim: Age (27): Member ID: [1]: Total - Age',
+    'mother_tongue_french'
+  );
 }
 
 function populateMotherTongue1(geojson){
   let data = fs.readFileSync('98-400-X2016049_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
   for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
-      'DIM: Mother tongue (10)',
-      'Total - Mother tongue',
-      'Dim: Age (27): Member ID: [1]: Total - Age',
-      'mother_tongue_total'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Mother tongue (10)',
-      'English',
-      'Dim: Age (27): Member ID: [1]: Total - Age',
-      'mother_tongue_english'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Mother tongue (10)',
-      'French',
-      'Dim: Age (27): Member ID: [1]: Total - Age',
-      'mother_tongue_french'
-    );
+    addMotherTongueElements(geojson, records, i);
   }
+  data = fs.readFileSync('98-400-X2016047_English_CSV_data_353.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addMotherTongueElements(geojson, records, i);
+  }
+}
+
+function addFamilyElements(geojson, records, i){
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Total - Census family structure',
+    'Dim: Number and age combinations of children (29): Member ID: [29]: Average number of children, all ages',
+    'average_number_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Total - Census family structure',
+    'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
+    'total_families_w_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Intact families',
+    'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
+    'intact_families_w_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Stepfamilies',
+    'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
+    'total_stepfamilies_w_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Lone-parent census families',
+    'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
+    'single_parent_families_w_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Total - Census family structure',
+    'Dim: Number and age combinations of children (29): Member ID: [4]: 1 child (aged 0 to 24 years)',
+    'families_w_one_child'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Total - Census family structure',
+    'Dim: Number and age combinations of children (29): Member ID: [9]: 2 children, of which at least one is aged 0 to 24 years',
+    'families_w_two_children'
+  );
+  addToGeoJSON(geojson, records[i],
+    'DIM: Census family structure including stepfamily status (9)',
+    'Total - Census family structure',
+    'Dim: Number and age combinations of children (29): Member ID: [19]: 3 or more children, of which at least one is aged 0 to 24 years',
+    'families_w_threeplus_children'
+  );
 }
 
 function populateFamilyStructure(geojson){
   let data = fs.readFileSync('98-400-X2016026_English_CSV_data.csv').toString();
   var records = parse(data, {columns: true});
   for(let i = 0; i < records.length; i++){
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Total - Census family structure',
-      'Dim: Number and age combinations of children (29): Member ID: [29]: Average number of children, all ages',
-      'average_number_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Total - Census family structure',
-      'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
-      'total_families_w_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Intact families',
-      'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
-      'intact_families_w_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Stepfamilies',
-      'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
-      'total_stepfamilies_w_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Lone-parent census families',
-      'Dim: Number and age combinations of children (29): Member ID: [1]: Total - Census families with children',
-      'single_parent_families_w_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Total - Census family structure',
-      'Dim: Number and age combinations of children (29): Member ID: [4]: 1 child (aged 0 to 24 years)',
-      'families_w_one_child'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Total - Census family structure',
-      'Dim: Number and age combinations of children (29): Member ID: [9]: 2 children, of which at least one is aged 0 to 24 years',
-      'families_w_two_children'
-    );
-    addToGeoJSON(geojson, records[i],
-      'DIM: Census family structure including stepfamily status (9)',
-      'Total - Census family structure',
-      'Dim: Number and age combinations of children (29): Member ID: [19]: 3 or more children, of which at least one is aged 0 to 24 years',
-      'families_w_threeplus_children'
-    );
+    addFamilyElements(geojson, records, i)
+  }
+
+  data = fs.readFileSync('98-400-X2016025_English_CSV_data.csv').toString();
+  records = parse(data, {columns: true});
+  for(let i = 0; i < records.length; i++){
+    addFamilyElements(geojson, records, i)
   }
 }
 
@@ -313,24 +371,7 @@ function addComputedFields(geojson){
   }
 }
 
-
-let geojson = require("./tracts.json");
-
-populatePopulationData(geojson);
-populateIncomeData1(geojson);
-populateIncomeData2(geojson);
-populateHouseholdIncome(geojson);
-populateFamilyStructure(geojson);
-populateMotherTongue1(geojson);
-
-addComputedFields(geojson);
-
-
-let data = fs.readFileSync('98-400-X2016057_English_CSV_data_totals_559.csv').toString();
-var records = parse(data, {columns: true});
-let geos = {};
-for(let i = 0; i < records.length; i++){
-  let record = records[i];
+function addMotherTongue2Elements(record, geos){
   if(   record['DIM: Sex (3)'] == "Total - Sex" &&
         record['DIM: Age (15A)'] == "Total - Age" &&
         record['DIM: Mother tongue (269)'] !== "Total - Mother tongue" &&
@@ -356,9 +397,42 @@ for(let i = 0; i < records.length; i++){
   }
 }
 
+let geojson = require("./tracts.json");
+
+populatePopulationData(geojson);
+populateIncomeData1(geojson);
+populateIncomeData2(geojson);
+populateHouseholdIncome(geojson);
+populateFamilyStructure(geojson);
+populateMotherTongue1(geojson);
+
+addComputedFields(geojson);
+
+
+let data = fs.readFileSync('98-400-X2016057_English_CSV_data_totals_559.csv').toString();
+var records = parse(data, {columns: true});
+let geos = {};
+for(let i = 0; i < records.length; i++){
+  let record = records[i];
+  addMotherTongue2Elements(record, geos);
+}
+
+data = {};
+
+let data2 = fs.readFileSync('98-400-X2016054_English_CSV_data.csv_353_2.csv').toString();
+records = parse(data2, {columns: true});
+for(let i = 0; i < records.length; i++){
+  let record = records[i];
+  addMotherTongue2Elements(record, geos);
+}
+
 for(let i = 0; i < geojson.features.length; i++){
-  geojson.features[i].properties["most_mother_tongue"] = geos[geojson.features[i].properties.CTUID].name;
-  geojson.features[i].properties["most_mother_tongue_prop"] = parseFloat(((geos[geojson.features[i].properties.CTUID].value / geojson.features[i].properties["mother_tongue_total"]) * 100).toFixed(1))
+  if(geos[geojson.features[i].properties.CTUID] !== undefined){
+    geojson.features[i].properties["most_mother_tongue"] = geos[geojson.features[i].properties.CTUID].name;
+    geojson.features[i].properties["most_mother_tongue_prop"] = parseFloat(((geos[geojson.features[i].properties.CTUID].value / geojson.features[i].properties["mother_tongue_total"]) * 100).toFixed(1))
+    if(geojson.features[i].properties["most_mother_tongue_prop"] == 0)
+      geojson.features[i].properties["most_mother_tongue"] = null;
+  }
 }
 
 console.log(JSON.stringify(geojson));
